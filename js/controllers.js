@@ -22,6 +22,38 @@ app.controller('IntroCtrl', ['$scope', '$http', '$timeout', function ($scope, $h
         $scope.pieData = data;
         $scope.pieDynamicData = data[0];
     });
+    $http.get('hyblabData/proportions_aides_disciplines.json').success (function(data) {
+        $scope.fixPieData = data;
+        $scope.pieList = [];
+        $scope.pieData = [];
+        
+        var reducePieList = [];
+        var reducePieData = [];
+        var temp = 0;
+        for (var i = 0; i < data.length; i++) {
+            $scope.pieList.push(data[i].name);
+            $scope.pieData.push(data[i].value);
+            reducePieList.push(data[i].name);
+            reducePieData.push(data[i].value);
+            if (data[i].value < $scope.pourcentage) {
+                reducePieList.pop();
+                reducePieData.pop();
+                temp += data[i].value;
+            }
+        }
+        reducePieData.push(temp);
+        reducePieList.push("Autres");
+        $scope.introPieListReduce = reducePieList;
+        $scope.introPieDataReduce = reducePieData;
+        $scope.introPieList = $scope.pieList;
+        $scope.introPieData = $scope.pieData;        
+    });
+    
+    $http.get('hyblabData/dataBar.json').success(function (data) {
+        
+        $scope.barData = data;
+        
+    });
     
     $scope.options = {
             chart: {
@@ -38,10 +70,6 @@ app.controller('IntroCtrl', ['$scope', '$http', '$timeout', function ($scope, $h
               transitionDuration: 100,
               color: ['rgba(0, 175, 155, 1)','rgba(182, 174, 195, 1)'],
               xAxis: {
-                  //axisLabel: 'Time (ms)'
-
-                  // showMaxMin: false,
-                  // staggerLabels: true
 
               },
               yAxis1: {
@@ -54,20 +82,26 @@ app.controller('IntroCtrl', ['$scope', '$http', '$timeout', function ($scope, $h
               yAxis2: {
                   
               },
-              useInteractiveGuideline: false,            
-              tooltip: {
-                contentGenerator: function (e) {
-                  var series = e.series[0];
-                  console.log(e);
-                  console.log(series);
-                  if (series.value === null) return;
-                  
-                  return "<div class='toolTip'><h2>22</h2><p>EMPLOI CRÉES</p><h1>en 1996</h1></div>";
-
-                  
-                } 
-              }
-            }
+              useInteractiveGuideline: true,
+              tooltip: true,
+              interactiveLayer: {
+                  tooltip: {
+                    contentGenerator: function (e) {
+                      var series = e.series[0];
+                      if (series.value === null) return;
+                      var temp = "";
+                      if (series.originalKey == "chomage"){
+                          temp = " POURCENT DE CHÔMEUR ";
+                      }  else {
+                          temp = " EMPLOI CRÉES ";
+                      }
+                      return "<div class='toolTip'><h2>"+(series.value?series.value.toFixed(2):0)+"</h2><p> "+temp+"</p><h1>en "+e.value+"</h1></div>";
+                    } 
+                  }
+                },
+                callback: function(){
+                  d3.selectAll('.nvd3.nv-legend g').style('fill', "red")
+            }}
         };
         
     $scope.update19961998 = function () {    
@@ -146,32 +180,7 @@ app.controller('IntroCtrl', ['$scope', '$http', '$timeout', function ($scope, $h
     
     $scope.pourcentage = 0.05;
     
-    $http.get('hyblabData/proportions_aides_disciplines.json').success (function(data) {
-        $scope.fixPieData = data;
-        $scope.pieList = [];
-        $scope.pieData = [];
-        
-        var reducePieList = [];
-        var reducePieData = [];
-        var temp = 0;
-        for (var i = 0; i < data.length; i++) {
-            $scope.pieList.push(data[i].name);
-            $scope.pieData.push(data[i].value);
-            reducePieList.push(data[i].name);
-            reducePieData.push(data[i].value);
-            if (data[i].value < $scope.pourcentage) {
-                reducePieList.pop();
-                reducePieData.pop();
-                temp += data[i].value;
-            }
-        }
-        reducePieData.push(temp);
-        reducePieList.push("Autres");
-        $scope.introPieListReduce = reducePieList;
-        $scope.introPieDataReduce = reducePieData;
-        $scope.introPieList = $scope.pieList;
-        $scope.introPieData = $scope.pieData;        
-    });
+    
     
     $scope.incr = function() {
         $scope.pourcentage += 0.01;
@@ -238,9 +247,43 @@ app.controller('IntroCtrl', ['$scope', '$http', '$timeout', function ($scope, $h
                 tickFormat: function(d){
                     return d3.format('.1f')(d);
                 }
-            }
-        }    
+
+            },
+            dispatch: {
+              /*tooltipShow: function(e){ console.log('! tooltip SHOW !')},
+              tooltipHide: function(e){console.log('! tooltip HIDE !')},
+              beforeUpdate: function(e){ console.log('! before UPDATE !')}*/
+            },
+            multibar: {
+              dispatch: {
+                //chartClick: function(e) {console.log("! chart Click !")},
+                elementClick: function(e) {
+                    console.log("! element Click !");
+                    $scope.optionBarChart.color = "red";
+                }
+                //elementDblClick: function(e) {console.log("! element Double Click !")},
+                //elementMouseout: function(e) {console.log("! element Mouseout !")},
+                //elementMouseover: function(e) {console.log("! element Mouseover !")}
+              }
+            },
+            tooltip: {
+                contentGenerator: function (e) {
+                  var series = e.series[0];
+                  //console.log(e);
+                  if (series.value === null) return;
+                  var temp = "";
+                  if (series.originalKey == "chomage"){
+                      temp = " POURCENT DE CHÔMEUR ";
+                  }  else {
+                      temp = " EMPLOI CRÉES ";
+                  }
+                  return "<div class='toolTip'><h2>"+(series.value?series.value.toFixed(2):0)+"</h2><p> "+temp+"</p><h1>en "+e.value+"</h1></div>";
+                } 
+          }
+        
+        }
     }
+    
     
 }]);
 

@@ -1,13 +1,13 @@
 var appHyblab = angular.module('hyblabApp');
 
-/*Whole page Controller*/
+/*Intro page Controller*/
 
 appHyblab.controller('IntroCtrl', function ($scope) {
       
    
 });
 
-/*Intro controller*/
+/*Whole page controller*/
 
 appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
     $http.get('hyblabData/data.json').success (function(data) {
@@ -22,7 +22,7 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.pieData = data;
         $scope.pieDynamicData = data[0];
     });
-    $http.get('hyblabData/proportions_aides_disciplines.json').success (function(data) {
+    $http.get('hyblabData/aides_accordees_par_discipline.json').success (function(data) {
         $scope.fixPieData = data;
         $scope.pieList = [];
         $scope.pieData = [];
@@ -117,7 +117,7 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         };
     
     var listCreation = [23, 11, 8, 5, 7, 3, 10, 7, 7, 3, 11, 9, 14, 10, 10, 9, 14, 19, 28];
-    $scope.emploisCreer = "Informations: "
+    $scope.emploisCreer = "180"
     function emplois(start, end) {
         $scope.emploisCreer = 0;
         for (var i = start; i < end; i++) {
@@ -180,18 +180,18 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.data = $scope.fix;
         $scope.graphInformation = $scope.textList[2].text;
         $scope.barData = $scope.zoomBarFixData;
-        $scope.titre = "1996 à maintenant...";
-        $scope.emploisCreer = "Information: ";
+        $scope.titre = "1997 à maintenant...";
+        emplois(0, 18);
     };
   
     /*DYNAMIC TEXT*/
     $scope.textList = [
-        {id: 1, text: "This is a test!"},
-        {id: 2, text: "Hope you like it :)"},
-        {id: 3, text: "thank you for trying me ^^"},
-        {id: 4, text: "'<h1>'Hello'</h1>'"}
+        {id: 1, text: ""},
+        {id: 2, text: ""},
+        {id: 3, text: ""},
+        {id: 4, text: ""}
     ];
-    //$scope.graphInformation = "Some random Text";
+    $scope.graphInformation = "Some random Text";
         
     $scope.pieOptions = {
         chart: {
@@ -262,26 +262,28 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
     $scope.optionBarChart = {
         chart: {
             type: 'multiBarChart',
-            height: 450,
+            height: 150,
+            width: 400,
             margin : {
                 top: 20,
                 right: 20,
                 bottom: 45,
                 left: 45
             },
+            showLegend: false,
             clipEdge: false,
-            duration: 4000,
-            stacked: true,
+            duration: 40,
+            stacked: false,
             color: ['rgba(0, 175, 155, 1)','rgba(182, 174, 195, 1)'],
             xAxis: {
-                axisLabel: 'BarChart',
+                axisLabel: '',
                 showMaxMin: false,
                 tickFormat: function(d){
                     return d3.format('f')(d);
                 }
             },
             yAxis: {
-                axisLabel: 'Y Axis',
+                axisLabel: '',
                 axisLabelDistance: -20,
                 tickFormat: function(d){
                     return d3.format('.1f')(d);
@@ -308,7 +310,6 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
             tooltip: {
                 contentGenerator: function (e) {
                   var series = e.series[0];
-                  //console.log(e);
                   if (series.value === null) return;
                   var temp = "";
                   if (series.originalKey == "chomage"){
@@ -318,12 +319,17 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
                   }
                   return "<div class='toolTip'><h2>"+(series.value?series.value.toFixed(2):0)+"</h2><p> "+temp+"</p><h1>en "+e.value+"</h1></div>";
                 } 
-          }
+          },
+            callback: function() {
+                return function () {
+                    console.log("test");
+                }
+            }
         
         }
     }
     
-    
+
 }]);
 
 /*Page one controller*/
@@ -337,3 +343,106 @@ appHyblab.controller('PageTwoCtrl', function ($scope) {
   
     
 });
+
+appHyblab.controller('PageThreeCtrl', function ($scope) {
+    $scope.slides = [
+            {'src': 'css/images/photo2.jpg'},
+            {'src': 'css/images/photo3.jpg'},
+            {'src': 'css/images/photo4.jpg'},
+            {'src': 'css/images/iut.jpg'}/*,
+            {'src': 'images/photo5.jpg', caption: 'Lorem ipsum dolor sit amet,  Enim, maxime.'},
+            {'src': 'images/photo6.jpg', caption: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, maxime.'}*/
+        ];
+
+    $scope.slideOptions = {
+            sourceProp: 'src',
+            visible: 5,
+            perspective: 60,
+            startSlide: 0,
+            border: 5,
+            dir: 'ltr',
+            width: 360,
+            height: 270,
+            space: 220
+        };
+
+
+        // ANY HTML
+        //===================================
+    $scope.slides2 = [
+            /*{'bg': '#2a6496', caption: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, maxime.'},
+            {'bg': '#000000', caption: 'Lorem ipsum dolor sit amet '},
+            {'bg': '#ffcc41', caption: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. '},
+            {'bg': '#445fac', caption: 'Lorem ipsum dolor sit amet,  Enim, maxime.'},
+            {'bg': '#442BF3', caption: 'Lorem ipsum dolor sit amet,  Maxime.'}*/
+        ];
+
+    $scope.slideOptions2 = {
+            visible: 3,
+            perspective: 35,
+            startSlide: 0,
+            border: 0,
+            dir: 'ltr',
+            width: 360,
+            height: 270,
+            space: 220,
+            controls: true
+        };
+
+
+        $scope.selectedClick = selectedClick;
+        $scope.slideChanged = slideChanged;
+        $scope.beforeChange = beforeChange;
+        $scope.lastSlide = lastSlide;
+
+
+        function lastSlide(index) {
+            console.log('Last Slide Selected callback triggered. \n == Slide index is: ' + index + ' ==');
+        }
+
+        function beforeChange(index) {
+            console.log('Before Slide Change callback triggered. \n == Slide index is: ' + index + ' ==');
+        }
+
+        function selectedClick(index) {
+            console.log('Selected Slide Clicked callback triggered. \n == Slide index is: ' + index + ' ==');
+        }
+
+        function slideChanged(index) {
+            console.log('Slide Changed callback triggered. \n == Slide index is: ' + index + ' ==');
+            if (index == 0) {
+                $scope.photos = [
+                    {'src': 'css/images/photo5.jpg'},
+                    {'src': 'css/images/photo6.jpg'},
+                    {'src': 'css/images/photo7.jpg'}
+                ];
+            } else if (index == 1) {
+                $scope.photos = [
+                    {'src': 'css/images/photo2.jpg'},
+                    {'src': 'css/images/photo3.jpg'},
+                    {'src': 'css/images/photo4.jpg'}
+                ];
+            } else if (index == 3) {
+                $scope.photos = [
+                    {'src': 'css/images/photo5.jpg'},
+                    {'src': 'css/images/photo6.jpg'},
+                    {'src': 'css/images/photo7.jpg'}
+                ];
+            } else if (index == 4) {
+                $scope.photos = [
+                    {'src': 'css/images/photo2.jpg'},
+                    {'src': 'css/images/photo3.jpg'},
+                    {'src': 'css/images/photo4.jpg'}
+                ];
+            }
+        }
+            
+    
+        $scope.photos = [
+            {'src': 'css/images/photo5.jpg'},
+            {'src': 'css/images/photo6.jpg'},
+            {'src': 'css/images/photo7.jpg'}
+        ];
+    
+});
+

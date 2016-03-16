@@ -27,7 +27,16 @@
         <div class="line lineSide"></div>
         <div class="blocData">
             <div class="numbersData">
-                <h1>{{emploisCreer}}</h1>
+                <li ng-init="manualStartTarget=0">
+                    <h1><p  counter
+                        value="manualStartVar"
+                        effect="'easeOutQuint'"
+                        duration="5000"
+                        to="emploisCreer">
+                      {{ manualStartVar | number:0 }}
+                    </p></h1>
+                </li>
+                <!--h1>{{emploisCreer}}</h1-->
                 <h2>EMPLOI CRÉES</h2>
             </div>
             <div class="miniGraph">
@@ -45,7 +54,6 @@
 <div>
     <p>{{titre}}</p>
 </div>
-<a href="#pageone" ng-click="updtOpt()">PageOne</a>
 <div class="deuxCourbes">
     <div>   
         <nvd3 class="with-3d-shadow with-transitions" options='options' data='data'></nvd3>    
@@ -67,5 +75,7 @@
         <div class="btnTimeline" ng-click=""><h3>1996-2009</h3></div>
     </div>  
 </div>
+
+
 
 

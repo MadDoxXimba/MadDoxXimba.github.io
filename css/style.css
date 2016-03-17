@@ -12,9 +12,15 @@ p,h1,h2,h3{
 	margin:0;
 }
 
-
+.titleSide{
+	font-size: 22px;
+    color: #9CA7AF;
+}
+.pie-legend li{
+	color:#9CA7AF;
+}
 html{
-	background:#FCFCFC;
+	background:RGBA(250, 250, 250, 1);
 	padding:0;
 	margin:0;
 }
@@ -23,13 +29,18 @@ body{
 	margin:0;
 }
 header{
-	padding:40px;
-	margin-bottom:100px;
+	padding:20px 20px 0px 60px;
+	border-bottom:1px solid rgba(0,0,0,0.1);
+	background:white;
+	z-index:100000;
+	    width: 100%;
+    position: absolute;
 	
 }
 header h1{
 	color:black;
 	font-weight:600;
+	font-size: 24Px;
 }
 header h2{
 	opacity:0.5;
@@ -46,7 +57,18 @@ ul{
 }
 .timeIndicator{
 	padding-top: 20px;
+	padding-left: 60px;
+	text-align:left;
 }
+.timeIndicator p{
+	padding-top: 4px;
+}
+.timeIndicator img{
+width:25px;
+float: left;
+    margin-right: 15px;
+}
+
 .nv-x .tick:nth-child(odd){
 	margin-top:20px;
 	display:none;
@@ -84,27 +106,33 @@ ul{
 	color:rgba(0,0,0,0.6);
 }
 .menuRight{
-	float: right;
-	margin-right:30px;
+	margin: 0 auto;
+    width: 500px;
 }
 .menuRight ul li img{
 	width:32px;
+	display:none;
 }
 .menuRight ul li{
 	display:inline-block;
 	text-align: center;
-	padding-right:20px;
-	font-size:12px;
+	margin-right:20px;
+	font-size:16px;
 	color:#E6E6E6;
-	width:90px;
+	width:100px;
+}
+.menuRight ul li p{
+	padding-bottom:15px;
 }
 .active{
 	color:#00af9B !important;
 	font-weight: 600;
+	border-bottom:4px solid #00af9B;
 }
 .mainContent{
 	width:100%;
 	text-align: center;
+	    padding-top: 50px;
 	
 }
 .btnTimeline{
@@ -118,12 +146,16 @@ ul{
 }
 .aideTimeline{
 	margin-left:70px;
+	margin-bottom:50px;
+	border-right:1px solid rgba(0,0,0,0.1);
+	border-left:1px solid rgba(0,0,0,0.1);
 }
+
 .zoom{
 	float:right;
 }
 .controlTimeline{
-	    padding-bottom: 50px;
+	    padding-right:50px;
 }
 .goBack:hover, .zoom:hover{
 	cursor:pointer;
@@ -133,7 +165,7 @@ ul{
 	padding:10px 20px 10px 20px;
 	border-radius:100px;
 	border:1px solid rgba(0,0,0,0.4);
-	float:left;
+	float:right;
 	font-size:12px;
 	font-weight:400;
 }
@@ -178,8 +210,8 @@ color:white;
 	margin-left:0px;
 }
 .aide5{
-	width:40%;
-	margin-left:55%;
+	width: 22%;
+    margin-left: 73%;
 }
 .aide6{
 	width:55%;
@@ -240,6 +272,9 @@ color:white;
 	border-radius:100px;
 	padding:10px 35px 10px 35px;
 }
+.infos{
+	width:390px;
+}
 .btnExplorer{
 	margin:0 auto;
 	margin-top:150px;
@@ -268,31 +303,24 @@ color:white;
 	cursor:pointer;
 
 }
-.sideBar{
-	border-left:1px solid #DEE2E2;
-	padding:30px;
-	height:100vh;
-	width:390px;
-	background:white;
-	float:right;
 
-}
 .description {
 	margin-bottom:20px;
+	    width: 390px;
 }
 .description h1{
 	font-size:22px;
 	margin-bottom:10px;
 
 }
-.btnExplorer:hover{
+.btn	Explorer:hover{
 	cursor:pointer;
 
 }
 .sideBar{
 	border-left:1px solid #DEE2E2;
 	padding:30px;
-	padding-top: 50px;
+	padding-top: 80px;
 	height:100vh;
 	width:390px;
 	background:white;
@@ -300,6 +328,9 @@ color:white;
 	top:0;
 	right:0;
 
+}
+.sideBartotal{
+	position: fixed;
 }
 
 .description {
@@ -336,21 +367,37 @@ color:white;
 }
 
 
+.filtersRightBox{
+	padding-left:60px;
+	    float: left;
+    width: 500px;
 
-.filtersRight{
-	width:390px;
-	height:80px;
-	border-top:1px solid rgba(0,0,0,0.2);
-	    position: absolute;
-    bottom: 100px;
+
 }
+.filtersRight{
+
+	background:white;
+	padding:5px;
+	width:974px;
+	height:auto;
+	border-top:1px solid rgba(0,0,0,0.2);
+	    position: fixed;
+    bottom: 0px;
+    text-align:left;
+    
+
+}
+
 .filtersRight h1{
-	padding-top:10px;
+	margin-top:10px;
 	font-size:16px;
+	margin-right:20px;
+	float:left;
 }
 .filtersType ul {
-	margin-top:10px;
+	
 }
+
 .filtersType ul li{
 	margin-right:10px;
 	display:inline-block;
@@ -410,7 +457,7 @@ cursor:pointer;
 .container-intro > h2 {
 		color:black;
 	font-size: 44px;
-	font-weight:600;
+	font-weight:900;
 	padding-top: 40px;
 	padding-bottom: 10px;
 
@@ -427,6 +474,7 @@ cursor:pointer;
 	
 	color: black;
 	padding: 10px;
+
 }
 .container-intro ul > li > img {
 	
@@ -445,12 +493,8 @@ cursor:pointer;
 	display: inline-block;
 }
 .wrapper-intro {
-
-	background-image: url("../img/bg.png");
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	height: 100vh;
+	
+	height: 25vh;
 
 
 }
@@ -459,8 +503,9 @@ cursor:pointer;
 
 	color:black;
 	font-size: 44px;
-	font-weight:600;
+	font-weight:900;
 	padding-top: 300px; 
+
 
 }
 
@@ -482,7 +527,35 @@ cursor:pointer;
 	font-size: 15pt;
 	color:white;
 }
+.timelineSelected{
+	width:95%;
+	margin-left:0;
+}
+.errorSize{
+	background:rgba(0,0,0,0.8);
+	height:100vh;
+	width:100vw;
+	display:none;
+	z-index:10000;
+	top:0;
+	position:fixed;
 
+
+}
+.errorSize p{
+	color:white;
+	width:70%;
+	margin:0 auto;
+	font-size:24px;
+	text-align:center;
+	margin-top:50%;
+}
+@media screen and (max-width: 600px){
+	.errorSize{
+		display:block;
+	}
+
+}
 /*END*/
 /*
 //POUR POSITIONER LES LEGENDS

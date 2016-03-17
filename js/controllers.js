@@ -14,7 +14,9 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.data = data;
         $scope.fix = data;
     });
-    
+    $http.get('hyblabData/dataCreation.json').success (function (data) {
+        $scope.dataMini = data; 
+    });
     $http.get('hyblabData/zoomData.json').success (function(data) {
         $scope.zoomData = data;
     });
@@ -85,8 +87,75 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
        $scope.zoomBarData = data; 
        
     });
+    
+    $http.get('hyblabData/dataInfo.json').success(function (data) {
+       $scope.dataInfo = data;
+    });
+    $scope.courbeDescription = "La stratégie régionale en matière d’emploi fera l’objet d’un examen spécifique au sein de la commission territoriale. Un renforcement de ce moyen d’intervention devra être mis en œuvre sur la période 2013-2016 dans chaque région."
+
+    $scope.courbeDescriptionTitre = "Qu\'est-ce que c\'est?"
+    $scope.courbeDescriptionAge = "Tous les âges";
+    $scope.courbeDescriptionNature = "Rémunération";
+    $scope.courbeDescriptionAutre = "";
 
     $scope.options = {
+            chart: {
+              type: 'multiChart',
+              height: 300,
+              margin : {
+                  top: 30,
+                  right: 60,
+                  bottom: 50,
+                  left: 70
+              },
+              x: function(d){ return d.x; },
+              y: function(d){ return d.y; },
+              transitionDuration: 100,
+              color: ['rgba(0, 175, 155, 0.8)','rgba(182, 174, 195, 0.8)'],
+              xAxis: {
+
+              },
+              yAxis1: {
+                  showMaxMin: false,
+                  tickFormat: function(d){
+                      return d3.format('.02f')(d);
+                  },
+                  axisLabelDistance: 300,
+                  css: {
+                opacity:"0.4",
+                color:"white",
+            }
+              },
+              yAxis2: {
+
+                  
+              },
+              useInteractiveGuideline: true,
+              tooltip: true,
+              interactiveLayer: {
+                  tooltip: {
+                    contentGenerator: function (e) {
+                      var series = e.series[0];
+                      if (series.value === null) return;
+                      var temp = "";
+                      if (series.originalKey == "chomage"){
+                          temp = " POURCENT DE CHÔMEUR ";
+                      }  else {
+                          temp = " EMPLOI CRÉES ";
+                      }
+                      return "<div class='toolTip'><h2>"+(series.value?series.value.toFixed(2):0)+"</h2><p> "+temp+"</p><h1>en "+e.value+"</h1></div>";
+                    } 
+                  }
+                },
+                callback: function(){
+                  d3.selectAll('.nvd3.nv-legend g').style('fill', "RGBA(55, 196, 180, 1)")
+            },
+            css: {
+                opacity:"0.4",
+            }
+        }
+        };
+    $scope.optionsMini = {
             chart: {
               type: 'multiChart',
               height: 340,
@@ -99,7 +168,7 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
               x: function(d){ return d.x; },
               y: function(d){ return d.y; },
               transitionDuration: 100,
-              color: ['rgba(0, 175, 155, 1)','rgba(182, 174, 195, 1)'],
+              color: ['rgba(0, 175, 155, 0.2)','rgba(182, 174, 195, 0.2)'],
               xAxis: {
 
               },
@@ -130,9 +199,52 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
                     } 
                   }
                 },
-                callback: function(){
-                  d3.selectAll('.nvd3.nv-legend g').style('fill', "RGBA(55, 196, 180, 1)")
-            }}
+                x: function(d){ return d.x; },
+                y: function(d){ return d.y; },
+                useInteractiveGuideline: false,
+                dispatch: {
+                    stateChange: function(e){ console.log("stateChange"); },
+                    changeState: function(e){ console.log("changeState"); },
+                    tooltipShow: function(e){ console.log("tooltipShow"); },
+                    tooltipHide: function(e){ console.log("tooltipHide"); }
+                },
+                xAxis: {
+                    axisLabel: ''
+                },
+                yAxis: {
+                    axisLabel: '',
+                    tickFormat: function(d){
+                        return d3.format('.02f')(d);
+                    },
+                    axisLabelDistance: -10
+                },
+                showXAxis: false,
+                showYAxis: false,
+                showLegend: false,
+                callback: function(chart){
+                    console.log("!!! lineChart callback !!!");
+                }
+            },
+            title: {
+                enable: false,
+                text: 'Title for Line Chart'
+            },
+            subtitle: {
+                enable: false,
+                text: 'Subtitle for simple line chart. Lorem ipsum dolor sit amet, at eam blandit sadipscing, vim adhuc sanctus disputando ex, cu usu affert alienum urbanitas.',
+                css: {
+                    'text-align': 'center',
+                    'margin': '10px 13px 0px 7px'
+                }
+            },
+            caption: {
+                enable: false,
+                html: '<b>Figure 1.</b> Lorem ipsum dolor sit amet, at eam blandit sadipscing, <span style="text-decoration: underline;">vim adhuc sanctus disputando ex</span>, cu usu affert alienum urbanitas. <i>Cum in purto erat, mea ne nominavi persecuti reformidans.</i> Docendi blandit abhorreant ea has, minim tantas alterum pro eu. <span style="color: darkred;">Exerci graeci ad vix, elit tacimates ea duo</span>. Id mel eruditi fuisset. Stet vidit patrioque in pro, eum ex veri verterem abhorreant, id unum oportere intellegam nec<sup>[1, <a href="https://github.com/krispo/angular-nvd3" target="_blank">2</a>, 3]</sup>.',
+                css: {
+                    'text-align': 'justify',
+                    'margin': '10px 13px 0px 7px'
+                }
+            }
         };
     
     var listCreation = [23, 11, 8, 5, 7, 3, 10, 7, 7, 3, 11, 9, 14, 10, 10, 9, 14, 19, 28];
@@ -146,7 +258,7 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
     function updateColor(debut, fin) {
 
         for (var i = 0; i < 19; i++) {
-            d3.selectAll("rect.nv-bar")[0][i].style= "fill: RGBA(230, 230, 230, 1)";
+            d3.selectAll("rect.nv-bar")[0][i].style= "fill: rgba(99, 120, 135, 0.2)";
         }
         for (var i = debut; i < fin; i++) {
             d3.selectAll("rect.nv-bar")[0][i].style= "fill: RGBA(55, 196, 180, 1)";
@@ -170,6 +282,10 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "1997 - 2005";
         emplois(0,9);
         updateColor(0, 9);
+        $scope.courbeDescription = $scope.dataInfo[1].description;
+
+        $scope.courbeDescriptionTitre = $scope.dataInfo[1].nom;
+
     }
     $scope.update20052010 = function () {    
         $scope.data = $scope.zoomData[2];
@@ -178,6 +294,10 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "2005 - 2010";
         emplois(8, 14);
         updateColor(8, 14);
+        $scope.courbeDescription = $scope.dataInfo[4].description;
+
+        $scope.courbeDescriptionTitre = $scope.dataInfo[4].nom;
+
     }
     $scope.update19972002 = function () {
         $scope.data = $scope.zoomData[3];
@@ -186,6 +306,10 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "1997 - 2002";
         emplois(0, 6);
         updateColor(0, 6);
+        $scope.courbeDescription = $scope.dataInfo[3].description;
+
+        $scope.courbeDescriptionTitre = $scope.dataInfo[3].nom;
+
     }
     $scope.update20102015 = function () {    
         $scope.data = $scope.zoomData[4];
@@ -194,6 +318,10 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "2010 - 2015";
         emplois(13, 19);
         updateColor(13, 19);
+        $scope.courbeDescription = $scope.dataInfo[8].description;
+
+        $scope.courbeDescriptionTitre = $scope.dataInfo[8].nom;
+
     }
     $scope.update20042015 = function () {
         $scope.data = $scope.zoomData[6];
@@ -202,6 +330,12 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "2004 - 2015";
         emplois(7, 19);
         updateColor(7, 19);
+        $scope.courbeDescription = $scope.dataInfo[11].description;
+        $scope.courbeDescriptionTitre = $scope.dataInfo[11].nom;
+        $scope.courbeDescriptionAge = $scope.dataInfo[11].age;
+        $scope.courbeDescriptionNature = $scope.dataInfo[11].nature;
+        $scope.courbeDescriptionAutre = $scope.dataInfo[11].autre;
+
     }
     $scope.update20092013 = function () {
         $scope.data = $scope.zoomData[8];
@@ -210,6 +344,12 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "2009 - 2013";
         emplois(12, 17);
         updateColor(12, 17);
+        $scope.courbeDescription = $scope.dataInfo[13].description;
+        $scope.courbeDescriptionTitre = $scope.dataInfo[13].nom;
+        $scope.courbeDescriptionAge = $scope.dataInfo[13].age;
+        $scope.courbeDescriptionNature = $scope.dataInfo[13].nature;
+        $scope.courbeDescriptionAutre = $scope.dataInfo[13].autre;
+
     }
     $scope.update19922005 = function () {
         $scope.data = $scope.zoomData[12];
@@ -226,14 +366,40 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "2012 - 2015";
         emplois(15, 19);
         updateColor(15, 19);
+        $scope.courbeDescription = $scope.dataInfo[9].description;
+        $scope.courbeDescriptionTitre = $scope.dataInfo[9].nom;
+        $scope.courbeDescriptionAge = $scope.dataInfo[9].age;
+        $scope.courbeDescriptionNature = $scope.dataInfo[9].nature;
+        $scope.courbeDescriptionAutre = $scope.dataInfo[9].autre;
+
     }
-    $scope.update20132015 = function () {
+    $scope.update20132015g = function () {
         $scope.data = $scope.zoomData[11];
         //$scope.barData = $scope.zoomBarData[7];
         $scope.titre = "2013 à 2015...";
         $scope.barAnnee = "2013 - 2015";
         emplois(17, 19);
         updateColor(17, 19);
+        $scope.courbeDescription = $scope.dataInfo[10].description;
+        $scope.courbeDescriptionTitre = $scope.dataInfo[10].nom;
+        $scope.courbeDescriptionAge = $scope.dataInfo[10].age;
+        $scope.courbeDescriptionNature = $scope.dataInfo[10].nature;
+        $scope.courbeDescriptionAutre = $scope.dataInfo[10].autre;
+
+    }
+    $scope.update20132015c = function () {
+        $scope.data = $scope.zoomData[11];
+        //$scope.barData = $scope.zoomBarData[7];
+        $scope.titre = "2013 à 2015...";
+        $scope.barAnnee = "2013 - 2015";
+        emplois(17, 19);
+        updateColor(17, 19);
+        $scope.courbeDescription = $scope.dataInfo[14].description;
+        $scope.courbeDescriptionTitre = $scope.dataInfo[14].nom;
+        $scope.courbeDescriptionAge = $scope.dataInfo[14].age;
+        $scope.courbeDescriptionNature = $scope.dataInfo[14].nature;
+        $scope.courbeDescriptionAutre = $scope.dataInfo[14].autre;
+
     }
     $scope.update19962009 = function () {
         $scope.data = $scope.zoomData[13];
@@ -242,6 +408,10 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "1996 - 2009";
         emplois(0, 13);
         updateColor(0, 13);
+        $scope.courbeDescription = $scope.dataInfo[12].description;
+
+        $scope.courbeDescriptionTitre = $scope.dataInfo[12].nom;
+
     }
     $scope.reset = function () {
         $scope.data = $scope.fix;
@@ -250,8 +420,10 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
         $scope.barAnnee = "1997 - 2015";
         emplois(0, 18);
         for (var i = 0; i < 19; i++) {
-            d3.selectAll("rect.nv-bar")[0][i].style= "fill: rgba(0, 175, 155, 1)"
+            d3.selectAll("rect.nv-bar")[0][i].style= "fill: rgba(99, 120, 135, 0.3)"
         }
+        $scope.courbeDescription = "La stratégie régionale en matière d’emploi fera l’objet d’un examen spécifique au sein de la commission territoriale. Un renforcement de ce moyen d’intervention devra être mis en œuvre sur la période 2013-2016 dans chaque région."
+        $scope.courbeDescriptionTitre = "Qu\'est-ce que c\'est?"
     };
           
     $scope.pieOptions = {
@@ -412,7 +584,7 @@ appHyblab.controller('MainCtrl', ['$scope', '$http', '$timeout', function ($scop
             clipEdge: false,
             duration: 40,
             stacked: false,
-            color: ['RGBA(230, 230, 230, 1)'],
+            color: ['RGBA(55, 196, 180, 1)'],
             xAxis: {
                 axisLabel: '',
                 showMaxMin: false,
